@@ -33,6 +33,9 @@ Este programa utiliza o **Tesseract OCR** para reconhecimento de texto.
 
 4. Caso utilize outro caminho, crie a variável de ambiente:
    TESSERACT_PATH=C:\caminho\para\tesseract.exe
+   
+**Observação:**  
+O nome da variável de ambiente deve ser exatamente **`TESSERACT_PATH`** (maiúsculo), conforme utilizado pelo programa.
 
 ---
 
