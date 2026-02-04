@@ -1,27 +1,46 @@
+# ======================
 # Python
+# ======================
 __pycache__/
-*.pyc
-*.pyo
-*.pyd
+*.py[cod]
+*$py.class
 
 # Virtual environment
 .venv/
 venv/
+env/
 
+# ======================
+# PyInstaller
+# ======================
+build/
+dist/
+*.spec
 
-# IDEs
-.vscode/
-.idea/
+# ======================
+# Test / coverage
+# ======================
+.coverage
+htmlcov/
+.pytest_cache/
 
-# OS
+# ======================
+# Logs
+# ======================
+*.log
+
+# ======================
+# OS / Editor
+# ======================
 .DS_Store
 Thumbs.db
 
-# build
-build/
-dist/
-*.spec.bak
+# VS Code
+.vscode/
+!.vscode/settings.json
 
-# logs
-*.log
-
+# ======================
+# Cache / temp
+# ======================
+*.tmp
+*.temp
