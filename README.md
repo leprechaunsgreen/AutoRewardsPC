@@ -9,6 +9,14 @@ O usuário final **não precisa instalar Python**, bibliotecas ou configurar nad
 
 ## 🚀 Download (Windows)
 
+👉 **Baixe a versão mais recente do programa aqui:**
+
+🔗 https://github.com/leprechaunsgreen/AutoRewardsPC/releases/latest
+
+📦 Após o download:
+1. Extraia o arquivo `.zip`
+2. Execute o `AutoRewardsPC.exe`
+
 ## 🔍 Dependência externa – Tesseract OCR
 
 Este programa utiliza o **Tesseract OCR** para reconhecimento de texto.
@@ -25,14 +33,6 @@ Este programa utiliza o **Tesseract OCR** para reconhecimento de texto.
 
 4. Caso utilize outro caminho, crie a variável de ambiente:
    TESSERACT_PATH=C:\caminho\para\tesseract.exe
-
-👉 **Baixe a versão mais recente do programa aqui:**
-
-🔗 https://github.com/leprechaunsgreen/AutoRewardsPC/releases/latest
-
-📦 Após o download:
-1. Extraia o arquivo `.zip`
-2. Execute o `AutoRewardsPC.exe`
 
 ---
 
