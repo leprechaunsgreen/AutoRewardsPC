@@ -11,9 +11,10 @@ O usuário final **não precisa instalar Python**, bibliotecas ou configurar nad
 
 👉 **Baixe a versão mais recente do programa aqui:**
 
-🔗 https://github.com/leprechaunsgreen/AutoRewardsPC/releases/latest
+🔗 <https://github.com/leprechaunsgreen/AutoRewardsPC/releases/latest>
 
 📦 Após o download:
+
 1. Extraia o arquivo `.zip`
 2. Execute o `AutoRewardsPC.exe`
 
@@ -24,7 +25,7 @@ Este programa utiliza o **Tesseract OCR** para reconhecimento de texto.
 ### É necessário instalar o Tesseract
 
 1. Baixe o instalador oficial:
-   https://github.com/UB-Mannheim/tesseract/wiki
+   <https://github.com/UB-Mannheim/tesseract/wiki>
 
 2. Instale normalmente no Windows
 
@@ -33,7 +34,7 @@ Este programa utiliza o **Tesseract OCR** para reconhecimento de texto.
 
 4. Caso utilize outro caminho, crie a variável de ambiente:
    TESSERACT_PATH=C:\caminho\para\tesseract.exe
-   
+
 **Observação:**  
 O nome da variável de ambiente deve ser exatamente **`TESSERACT_PATH`** (maiúsculo), conforme utilizado pelo programa.
 
@@ -75,10 +76,78 @@ O nome da variável de ambiente deve ser exatamente **`TESSERACT_PATH`** (maiús
 Este projeto utiliza **GitHub Actions** para gerar automaticamente o executável do Windows.
 
 Sempre que ocorre:
+
 - um `push` no repositório
 - ou a criação de uma nova tag (ex: `v1.0.0`)
 
+## 🏷️ Como criar uma nova tag (release)
+
+As **tags** são usadas para versionar o projeto e gerar novas versões do executável automaticamente.
+
+### 1️⃣ Atualize o repositório local
+
+Antes de criar a tag, certifique-se de que o código está atualizado:
+
+```bash
+git pull origin main
+
+```
+
+## 2️⃣ Comando para verificar quais Tags existem na sua maquina
+
+```bash
+git tag
+
+```
+
+## 3️⃣ Crie a tag localmente
+
+```bash
+git tag v1.0.1
+
+```
+
+## 4️⃣ Crie a tag localmente
+
+```bash
+git tag v1.0.1
+
+```
+
+## 2️⃣ Envie a tag para o GitHub
+
+```bash
+git push origin v1.0.1
+
+```
+
+Após esse comando:
+
+1. O GitHub receberá a nova tag
+2. O GitHub Actions será executado automaticamente
+3. O executável (.exe) será gerado
+
+5️⃣ Acesse a Release no GitHub
+
+1. Vá até o repositório no GitHub
+2. Clique em Releases
+3. A nova versão estará disponível para download
+
+ℹ️ Observações importantes
+
+- Se a tag já existir, o Git exibirá o erro:
+
+```bash
+fatal: tag 'v1.0.1' already exists
+
+```
+
+Nesse caso, crie uma nova versão (ex: v1.0.2).
+
+- As tags não devem ser alteradas após publicadas.
+
 O GitHub:
+
 - executa o workflow de build
 - gera o `.exe`
 - publica o artefato para download
@@ -127,7 +196,7 @@ pyinstaller --onefile main.py
 
 ## 📁 Estrutura do projeto (resumida)
 
-```
+```bash
 AutoRewardsPC/
 ├─ .github/
 │  └─ workflows/
