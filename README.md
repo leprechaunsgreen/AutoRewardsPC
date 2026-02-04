@@ -9,6 +9,23 @@ O usuário final **não precisa instalar Python**, bibliotecas ou configurar nad
 
 ## 🚀 Download (Windows)
 
+## 🔍 Dependência externa – Tesseract OCR
+
+Este programa utiliza o **Tesseract OCR** para reconhecimento de texto.
+
+### É necessário instalar o Tesseract
+
+1. Baixe o instalador oficial:
+   https://github.com/UB-Mannheim/tesseract/wiki
+
+2. Instale normalmente no Windows
+
+3. O instalador padrão já configura o caminho automaticamente:
+   C:\Program Files\Tesseract-OCR\tesseract.exe
+
+4. Caso utilize outro caminho, crie a variável de ambiente:
+   TESSERACT_PATH=C:\caminho\para\tesseract.exe
+
 👉 **Baixe a versão mais recente do programa aqui:**
 
 🔗 https://github.com/leprechaunsgreen/AutoRewardsPC/releases/latest
