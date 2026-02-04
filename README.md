@@ -15,21 +15,50 @@ O usuário final **não precisa instalar Python**, bibliotecas ou configurar nad
 
 📦 Após o download:
 
-1. Extraia o arquivo `.zip`
-2. Execute o `AutoRewardsPC.exe`
+1. Extraia o arquivo `.zip` em uma pasta de sua preferencia como por exemplo crie uma pasta `C:\AutoRewardsPC`
+2. Entre na pasta e crie uma atalho do `AutoRewardsPC.exe` na área de trabalho (desktop)
+3. Clique no atalho para executar o sistema
 
 ## 🔍 Dependência externa – Tesseract OCR
 
-Este programa utiliza o **Tesseract OCR** para reconhecimento de texto.
+Este programa utiliza o **Tesseract OCR** (Optical Character Recognition) para realizar a **leitura e reconhecimento de textos exibidos na tela**.
+
+O Tesseract é responsável por converter imagens e capturas de tela em texto digital, permitindo que o sistema:
+- identifique palavras, números e padrões visuais
+- reconheça textos que não podem ser lidos diretamente pelo sistema
+- automatize ações com base no conteúdo exibido na tela
+
+Sem o Tesseract OCR, o programa **não consegue interpretar textos presentes em imagens ou capturas**, o que inviabiliza parte fundamental do funcionamento do sistema.
+
+---
+
+### 📌 Por que o Tesseract não vem embutido no executável?
+
+O Tesseract OCR é uma ferramenta externa e independente do Python.  
+Por boas práticas de distribuição e licenciamento, ele **não é incorporado diretamente** ao executável (`.exe`) do programa.
+
+Isso traz vantagens como:
+- executável mais leve
+- menor chance de bloqueio por antivírus
+- facilidade de atualização do OCR
+- maior estabilidade e compatibilidade
+
+---
+
+### 📥 Instalação do Tesseract OCR (obrigatória)
+
+Para que o programa funcione corretamente, é necessário instalar o Tesseract OCR no Windows.
+
+#### Passo a passo:
 
 ### É necessário instalar o Tesseract
 
 1. Baixe o instalador oficial:
    <https://github.com/UB-Mannheim/tesseract/wiki>
 
-2. Instale normalmente no Windows
+2. Baixe e Instale normalmente no Windows
 
-3. O instalador padrão já configura o caminho automaticamente:
+3. Durante a instalação, mantenha o caminho padrão, o instalador padrão já configura o caminho automaticamente:
    C:\Program Files\Tesseract-OCR\tesseract.exe
 
 4. Caso utilize outro caminho, crie a variável de ambiente:
@@ -37,6 +66,34 @@ Este programa utiliza o **Tesseract OCR** para reconhecimento de texto.
 
 **Observação:**  
 O nome da variável de ambiente deve ser exatamente **`TESSERACT_PATH`** (maiúsculo), conforme utilizado pelo programa.
+
+---
+
+### 🧪 Como o programa localiza o Tesseract
+
+O sistema verifica o Tesseract nesta ordem:
+
+1. Variável de ambiente `TESSERACT_PATH`
+2. Caminho padrão de instalação do Windows
+3. Caso não encontre, o programa exibirá um erro informando que o Tesseract não está instalado
+
+---
+
+### ❌ O que acontece se o Tesseract não estiver instalado?
+
+- O reconhecimento de texto não funcionará
+- Partes essenciais do sistema ficarão indisponíveis
+- O programa exibirá uma mensagem de erro orientando a instalação
+
+---
+
+### ✅ Conclusão
+
+✔️ O Tesseract OCR é essencial para o funcionamento do sistema  
+✔️ A instalação é simples e gratuita  
+✔️ O código é open source e amplamente utilizado no mercado  
+
+Após a instalação do Tesseract, o programa funcionará normalmente.
 
 ---
 
