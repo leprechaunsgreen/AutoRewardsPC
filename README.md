@@ -131,7 +131,7 @@ Após esse comando:
 
 1. Vá até o repositório no GitHub
 2. Clique em Releases
-3. A nova versão estará disponível para download
+3. A nova versão estará disponível para download no link que está logo acima
 
 ℹ️ Observações importantes
 
