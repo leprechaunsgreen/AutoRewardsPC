@@ -11,7 +11,7 @@ O usuário final **não precisa instalar Python**, bibliotecas ou configurar nad
 
 👉 **Baixe a versão mais recente do programa aqui:**
 
-🔗 https://github.com/leprechaunsgreen/AutoRewardsPC/releases/latest
+🔗 <https://github.com/leprechaunsgreen/AutoRewardsPC/releases/latest>
 
 ### 📦 Após o download
 
@@ -54,17 +54,19 @@ Isso traz vantagens como:
 ### 📥 Instalação do Tesseract OCR (obrigatória)
 
 1. Acesse o instalador oficial:  
-   https://github.com/UB-Mannheim/tesseract/wiki
+   <https://github.com/UB-Mannheim/tesseract/wiki>
 
 2. Baixe e instale normalmente no Windows
 
 3. Durante a instalação, mantenha o caminho padrão:
-   ```
+
+   ```bash
    C:\Program Files\Tesseract-OCR\tesseract.exe
    ```
 
 4. Caso utilize outro caminho, configure a variável de ambiente:
-   ```
+
+   ```bash
    TESSERACT_PATH=C:\caminho\para\tesseract.exe
    ```
 
