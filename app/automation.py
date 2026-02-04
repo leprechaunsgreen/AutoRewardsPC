@@ -1,3 +1,4 @@
+import shutil
 import os
 import random
 import re
@@ -11,11 +12,24 @@ import pytesseract
 # ==============================
 # CONFIGURAÇÃO DO TESSERACT
 # ==============================
-TESSERACT_PATH = os.getenv(
-    "TESSERACT_PATH", r"C:\Program Files\Tesseract-OCR\tesseract.exe"
-)
-pytesseract.pytesseract.tesseract_cmd = TESSERACT_PATH
+def find_tesseract():
+    env_path = os.getenv("TESSERACT_PATH")
+    if env_path and os.path.exists(env_path):
+        return env_path
 
+    which = shutil.which("tesseract")
+    if which:
+        return which
+
+    default = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+    if os.path.exists(default):
+        return default
+
+    raise FileNotFoundError(
+        "Tesseract OCR não encontrado. Instale o Tesseract ou configure TESSERACT_PATH."
+    )
+
+TESSERACT_PATH = find_tesseract()
 
 # ==============================
 # UTILIDADES
@@ -26,6 +40,12 @@ def log_safe(log_callback, mensagem):
     else:
         print(mensagem)
 
+if not os.path.exists(TESSERACT_PATH):
+    log_safe(log_callback, "❌ Tesseract-OCR não encontrado.")
+    log_safe(log_callback, "Instale em: https://github.com/UB-Mannheim/tesseract/wiki")
+    sys.exit(1)
+
+pytesseract.pytesseract.tesseract_cmd = TESSERACT_PATH
 
 def sleep_seguro(segundos, stop_event, step=0.2):
     elapsed = 0
@@ -35,7 +55,6 @@ def sleep_seguro(segundos, stop_event, step=0.2):
         time.sleep(step)
         elapsed += step
     return True
-
 
 # ==============================
 # CONTROLE DE JANELAS
