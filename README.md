@@ -11,9 +11,9 @@ O usuário final **não precisa instalar Python**, bibliotecas ou configurar nad
 
 👉 **Baixe a versão mais recente do programa aqui:**
 
-🔗 <https://github.com/leprechaunsgreen/AutoRewardsPC/releases/latest>
+🔗 https://github.com/leprechaunsgreen/AutoRewardsPC/releases/latest
 
-📦 Após o download:
+### 📦 Após o download
 
 1. Extraia o arquivo `.zip` em uma pasta de sua preferência  
    (exemplo: `C:\AutoRewardsPC`)
@@ -25,19 +25,46 @@ O usuário final **não precisa instalar Python**, bibliotecas ou configurar nad
 
 ## 🔍 Dependência externa – Tesseract OCR
 
-Este programa utiliza o **Tesseract OCR** para reconhecimento de texto.
+Este programa utiliza o **Tesseract OCR** (Optical Character Recognition) para realizar a **leitura e reconhecimento de textos exibidos na tela**.
 
-### É necessário instalar o Tesseract
+O Tesseract é responsável por converter imagens e capturas de tela em texto digital, permitindo que o sistema:
 
-1. Baixe o instalador oficial:
-   <https://github.com/UB-Mannheim/tesseract/wiki>
+- identifique palavras, números e padrões visuais
+- reconheça textos que não podem ser lidos diretamente pelo sistema
+- automatize ações com base no conteúdo exibido na tela
 
-2. Instale normalmente no Windows
+Sem o Tesseract OCR, o programa **não consegue interpretar textos presentes em imagens ou capturas**, o que inviabiliza parte fundamental do funcionamento do sistema.
 
-3. O instalador padrão já configura o caminho automaticamente:
+---
+
+### 📌 Por que o Tesseract não vem embutido no executável?
+
+O Tesseract OCR é uma ferramenta externa e independente do Python.  
+Por boas práticas de distribuição e licenciamento, ele **não é incorporado diretamente** ao executável (`.exe`) do programa.
+
+Isso traz vantagens como:
+
+- executável mais leve
+- menor chance de bloqueio por antivírus
+- facilidade de atualização do OCR
+- maior estabilidade e compatibilidade
+
+---
+
+### 📥 Instalação do Tesseract OCR (obrigatória)
+
+1. Acesse o instalador oficial:  
+   https://github.com/UB-Mannheim/tesseract/wiki
+
+2. Baixe e instale normalmente no Windows
+
+3. Durante a instalação, mantenha o caminho padrão:
+   ```
    C:\Program Files\Tesseract-OCR\tesseract.exe
+   ```
 
-4. Caso utilize outro caminho, crie a variável de ambiente:
+4. Caso utilize outro caminho, configure a variável de ambiente:
+   ```
    TESSERACT_PATH=C:\caminho\para\tesseract.exe
    ```
 
