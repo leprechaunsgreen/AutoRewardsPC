@@ -8,9 +8,7 @@ import customtkinter as ctk
 import pyautogui as ptg
 from PIL import Image, ImageTk
 
-from app.config import REGION_KEY, REQUIRED_CLICK_KEYS, RESOLUCOES
-
-CALIB_PATH = Path(__file__).parent / "calibration.json"
+from core.settings import CALIB_PATH, REGION_KEY, REQUIRED_CLICK_KEYS, RESOLUCOES
 
 
 def get_backups_dir() -> Path:
@@ -229,14 +227,16 @@ class Calibrator(ctk.CTkToplevel):
     # --------------------------------------------------
 
     def save(self):
-        if set(self._capture_order) - set(self.posicoes.keys()):
-            self._append_log("❌ Calibração incompleta. Capture todos os itens.")
+        missing = [k for k in self._capture_order if k not in self.posicoes]
+        if missing:
+            self._append_log(f"❌ Itens não capturados: {missing}")
             return
 
         try:
-            w, h = map(int, self.resolution_name.split("x"))
+            w, h = map(int, self.resolution_name.lower().strip().split("x"))
         except Exception:
             w, h = ptg.size()
+            self.resolution_name = f"{w}x{h}"
 
         calib = {}
         for k, v in self.posicoes.items():
@@ -247,15 +247,19 @@ class Calibrator(ctk.CTkToplevel):
                 x, y = v
                 calib[k] = [x / w, y / h]
 
+        CALIB_PATH.parent.mkdir(parents=True, exist_ok=True)
+
         data = {}
         if CALIB_PATH.exists():
             try:
                 data = json.loads(CALIB_PATH.read_text(encoding="utf-8"))
-            except Exception:
-                pass
+            except Exception as e:
+                self._append_log(f"⚠ Erro lendo calibração antiga: {e}")
 
         data[self.resolution_name] = calib
-        CALIB_PATH.write_text(json.dumps(data, indent=2), encoding="utf-8")
+        CALIB_PATH.write_text(
+            json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8"
+        )
 
         self._append_log(f"✅ Calibração salva em: {CALIB_PATH}")
         self.btn_save.configure(state="disabled")
@@ -373,33 +377,37 @@ def export_calibrations(dest_path: str | None = None) -> Path:
     return p
 
 
-def import_calibrations(src_path: str) -> bool:
-    """Importa calibrações de `src_path`, mesclando (sobrescreve por chave) no arquivo padrão.
-
-    Retorna True se importação bem-sucedida.
-    """
-    p = Path(src_path)
-    if not p.exists():
-        return False
+def import_calibrations(file_path: str) -> bool:
     try:
-        new = json.loads(p.read_text(encoding="utf-8"))
-    except Exception:
+        new_data = json.loads(Path(file_path).read_text(encoding="utf-8"))
+
+        if CALIB_PATH.exists():
+            current = json.loads(CALIB_PATH.read_text(encoding="utf-8"))
+        else:
+            current = {}
+
+        # sobrescreve / adiciona
+        current.update(new_data)
+
+        CALIB_PATH.write_text(
+            json.dumps(current, indent=2, ensure_ascii=False), encoding="utf-8"
+        )
+        return True
+
+    except Exception as e:
+        print("Erro import_calibrations:", e)
         return False
 
-    existing = {}
-    if CALIB_PATH.exists():
-        try:
-            existing = json.loads(CALIB_PATH.read_text(encoding="utf-8"))
-        except Exception:
-            existing = {}
 
-    # mescla (novas chaves ou sobrescritas)
-    existing.update(new)
+def load_calibration_for_resolution(resolution: str) -> dict | None:
+    if not CALIB_PATH.exists():
+        return None
+
     try:
-        CALIB_PATH.write_text(json.dumps(existing, indent=2), encoding="utf-8")
+        data = json.loads(CALIB_PATH.read_text(encoding="utf-8"))
+        return data.get(resolution)
     except Exception:
-        return False
-    return True
+        return None
 
 
 # ======================================================

@@ -9,12 +9,11 @@ from tkinter import filedialog, messagebox
 import customtkinter as ctk
 from PIL import Image, ImageTk  # Pillow
 
-from app.automation import executar_automacao
-from app.items import gerar_lista_itens
+from core.automation import executar_automacao
+from core.settings import CALIB_PATH
+from domain.items import gerar_lista_itens
 
 ctk.set_appearance_mode("dark")
-
-CALIB_PATH = Path(__file__).parent / "calibration.json"
 
 
 # ===== INICIANDO O ÍCONE =====
@@ -25,13 +24,13 @@ def resource_path(relative_path: str) -> Path:
     return Path(__file__).parent / relative_path
 
 
-class App(ctk.CTk):
+class MainWindow(ctk.CTk):
     def __init__(self):
         super().__init__()
 
         # ===== ÍCONE DA JANELA (CORRETO) =====
-        icon_ico = resource_path("app/assets/icon.ico")
-        icon_png = resource_path("app/assets/icon.png")
+        icon_ico = resource_path("assets/icon.ico")
+        icon_png = resource_path("assets/icon.png")
 
         try:
             if icon_ico.exists():
@@ -69,7 +68,7 @@ class App(ctk.CTk):
         # variáveis usadas pelos controles (inicializações mínimas)
         # default para resolução: primeira resolução definida em app.config.RESOLUCOES
         try:
-            from app.config import RESOLUCOES as _RESOLUCOES
+            from core.settings import RESOLUCOES as _RESOLUCOES
 
             _default_res = next(iter(_RESOLUCOES.keys())) if _RESOLUCOES else ""
         except Exception:
@@ -107,7 +106,7 @@ class App(ctk.CTk):
 
         # Option menu para seleção de resolução (liga-se a `self.resolucao`)
         try:
-            from app.config import RESOLUCOES as _RESOLUCOES
+            from core.settings import RESOLUCOES as _RESOLUCOES
 
             _res_values = list(_RESOLUCOES.keys())
         except Exception:
@@ -372,7 +371,7 @@ class App(ctk.CTk):
 
         textos = gerar_lista_itens(500)
         # import get_runtime_config lazily to avoid circular import issues in frozen exe
-        from app.config import get_runtime_config
+        from core.settings import get_runtime_config
 
         # obtém config em pixels, aplicando calibração percentual se disponível
         try:
@@ -424,7 +423,7 @@ class App(ctk.CTk):
 
     def abrir_calibracao(self):
         # Abre janela de calibragem (não bloqueante)
-        from app.calibration import Calibrator
+        from ui.calibration import Calibrator
 
         Calibrator(self, self.resolucao.get())
 
@@ -433,7 +432,7 @@ class App(ctk.CTk):
 
         Procura por `icon_<name>_48.png` e `icon_<name>_28.png`.
         """
-        assets_dir = Path(__file__).parent / "assets"
+        assets_dir = resource_path("assets")
         self._icons = {}
         names = [
             "start",
@@ -498,7 +497,7 @@ class App(ctk.CTk):
 
     def remove_calibration_current(self):
         try:
-            from app.calibration import remove_calibration
+            from ui.calibration import remove_calibration
 
             res_name = self.resolucao.get()
             if not messagebox.askyesno(
@@ -527,7 +526,7 @@ class App(ctk.CTk):
 
     def export_calibrations(self):
         try:
-            from app.calibration import export_calibrations
+            from ui.calibration import export_calibrations
 
             file = filedialog.asksaveasfilename(
                 defaultextension=".json",
@@ -547,13 +546,12 @@ class App(ctk.CTk):
 
     def import_calibrations(self):
         try:
-            from app.calibration import import_calibrations
+            from ui.calibration import import_calibrations
 
             file = filedialog.askopenfilename(filetypes=[("JSON", "*.json")])
             if not file:
                 return
 
-            # preview keys to check for conflicts
             try:
                 new_data = json.loads(Path(file).read_text(encoding="utf-8"))
             except Exception:
@@ -561,28 +559,34 @@ class App(ctk.CTk):
                 return
 
             new_keys = set(new_data.keys())
-            calib_path = CALIB_PATH
             existing_keys = set()
-            if calib_path.exists():
+
+            if CALIB_PATH.exists():
                 try:
                     existing_keys = set(
-                        json.loads(calib_path.read_text(encoding="utf-8")).keys()
+                        json.loads(CALIB_PATH.read_text(encoding="utf-8")).keys()
                     )
                 except Exception:
-                    existing_keys = set()
+                    pass
 
             overlap = new_keys & existing_keys
             if overlap:
-                msg = f"O arquivo contém calibrações para: {', '.join(sorted(overlap))}.\nDeseja sobrescrever essas entradas?"
+                msg = (
+                    f"O arquivo contém calibrações para:\n"
+                    f"{', '.join(sorted(overlap))}\n\nDeseja sobrescrever?"
+                )
                 if not messagebox.askyesno("Confirmar importação", msg):
                     self.log("ℹ️ Importação cancelada pelo usuário")
                     return
 
+            # ✅ AGORA SIM — SEMPRE EXECUTA
             ok = import_calibrations(file)
+
             if ok:
                 self.log(f"✅ Calibrações importadas de {file}")
             else:
                 self.log(f"❌ Falha ao importar calibrações de {file}")
+
         except Exception as e:
             self.log(f"❌ Erro importando calibrações: {e}")
 
@@ -591,7 +595,7 @@ class App(ctk.CTk):
             self.log("ℹ️ Nenhum backup disponível")
             return
         try:
-            from app.calibration import restore_backup
+            from ui.calibration import restore_backup
 
             if not messagebox.askyesno(
                 "Confirmar restauração",

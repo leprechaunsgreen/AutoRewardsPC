@@ -1,5 +1,6 @@
-# config.py
 import json
+import sys
+from pathlib import Path
 
 RESOLUCOES = {
     "1280x1024": {
@@ -52,6 +53,15 @@ REQUIRED_CLICK_KEYS = [
 REGION_KEY = "pc_search_region"
 
 
+def get_calib_path() -> Path:
+    if hasattr(sys, "_MEIPASS"):
+        return Path(sys.executable).parent / "calibration.json"
+    return Path(__file__).parent.parent / "calibration.json"
+
+
+CALIB_PATH = get_calib_path()
+
+
 def _parse_resolucao_str(name: str):
     try:
         w, h = name.split("x")
@@ -96,35 +106,36 @@ def _apply_calibration_to_pixels(resolution_name: str, calibration: dict):
     return result
 
 
-def get_runtime_config(resolution_name: str, calibration_path: str = None):
-    """Retorna um config pronto (pixels) para uso na automação.
+def get_runtime_config(resolution: str):
+    import pyautogui as ptg
 
-    Se `calibration_path` existir, tenta carregar calibração percentual e aplicá-la.
-    """
-    from pathlib import Path
+    from core.settings import CALIB_PATH, REGION_KEY, RESOLUCOES
 
-    base = RESOLUCOES.get(resolution_name)
-    if base is None:
-        raise KeyError(f"Resolução desconhecida: {resolution_name}")
+    w, h = ptg.size()
 
-    if calibration_path is None:
-        calibration_path = Path(__file__).parent / "calibration.json"
-    else:
-        calibration_path = Path(calibration_path)
+    base = RESOLUCOES[resolution].copy()
 
-    if calibration_path.exists():
-        try:
-            data = json.loads(calibration_path.read_text(encoding="utf-8"))
-            calib_for_res = data.get(resolution_name)
-            if calib_for_res:
-                return _apply_calibration_to_pixels(resolution_name, calib_for_res)
-        except Exception:
-            # se falhar ao ler calibração, retorna uma cópia do base sem alteração
-            return base.copy()
+    if not CALIB_PATH.exists():
+        return base
 
-    # sempre retornamos uma cópia do `base` para evitar que o chamador
-    # modifique inadvertidamente o dicionário original em `RESOLUCOES`.
-    return base.copy()
+    data = json.loads(CALIB_PATH.read_text(encoding="utf-8"))
+    calib = data.get(resolution)
+
+    if not calib:
+        return base
+
+    for k, v in calib.items():
+        if k == REGION_KEY:
+            base[k] = (
+                int(v[0] * w),
+                int(v[1] * h),
+                int(v[2] * w),
+                int(v[3] * h),
+            )
+        else:
+            base[k] = (int(v[0] * w), int(v[1] * h))
+
+    return base
 
 
 def validar_resolucoes(resolucoes):

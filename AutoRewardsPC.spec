@@ -2,18 +2,17 @@
 
 from pathlib import Path
 import os
-from PyInstaller.utils.hooks import collect_data_files
 
 BASE_DIR = Path(os.getcwd())
 
 block_cipher = None
 
 a = Analysis(
-    ['main.py'],
-    pathex=[str(BASE_DIR)],
+    [str(BASE_DIR / 'src' / '__main__.py')],
+    pathex=[str(BASE_DIR / 'src')],
     binaries=[],
     datas=[
-        (str(BASE_DIR / 'app' / 'assets'), 'app/assets'),
+        (str(BASE_DIR / 'src' / 'assets'), 'assets'),
     ],
     hiddenimports=[],
     hookspath=[],
@@ -37,8 +36,8 @@ exe = EXE(
     bootloader_ignore_signals=False,
     strip=False,
     upx=True,
-        console=False,  # False = sem terminal
-    icon=str(BASE_DIR / 'app' / 'assets' / 'icon.ico'),
+    console=False,
+    icon=str(BASE_DIR / 'src' / 'assets' / 'icon.ico'),
 )
 
 coll = COLLECT(
