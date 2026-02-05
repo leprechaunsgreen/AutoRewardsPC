@@ -14,6 +14,8 @@ from app.items import gerar_lista_itens
 
 ctk.set_appearance_mode("dark")
 
+CALIB_PATH = Path(__file__).parent / "calibration.json"
+
 
 # ===== INICIANDO O ÍCONE =====
 def resource_path(relative_path: str) -> Path:
@@ -177,87 +179,74 @@ class App(ctk.CTk):
         )
         self.btn_calibrate.grid(row=1, column=1, padx=6, pady=6, sticky="ew")
 
-        icon_path = resource_path("app/assets/icon.ico")
+        # icon_path = resource_path("app/assets/icon.ico")
 
-        def set_window_icon():
-            if icon_path.exists():
-                """Carrega ícones PNG estáticos de `app/assets/` (padrão simples).
+        # def set_window_icon():
+        #     if icon_path.exists():
+        #         """Carrega ícones PNG estáticos de `app/assets/` (padrão simples).
 
-                Procura por `icon_<name>_48.png` e `icon_<name>_28.png`.
-                """
-                assets_dir = Path(__file__).parent / "assets"
-                self._icons = {}
-                names = [
-                    "start",
-                    "calibrate",
-                    "auto",
-                    "remove",
-                    "export",
-                    "import",
-                    "undo",
-                    "stop",
-                ]
-                for name in names:
-                    p = assets_dir / f"icon_{name}_48.png"
-                    size = 48
-                    if not p.exists():
-                        p = assets_dir / f"icon_{name}_28.png"
-                        size = 28
-                    try:
-                        if p.exists():
-                            loaded = Image.open(p).convert("RGBA")
-                            try:
-                                ctk_img = ctk.CTkImage(
-                                    light_image=loaded, size=(size, size)
-                                )
-                                self._icons[name] = ctk_img
-                            except Exception:
-                                self._icons[name] = ImageTk.PhotoImage(loaded)
-                        else:
-                            self._icons[name] = None
-                    except Exception:
-                        self._icons[name] = None
+        #         Procura por `icon_<name>_48.png` e `icon_<name>_28.png`.
+        #         """
+        #         assets_dir = Path(__file__).parent / "assets"
+        #         self._icons = {}
+        #         names = [
+        #             "start",
+        #             "calibrate",
+        #             "remove",
+        #             "export",
+        #             "import",
+        #             "undo",
+        #             "stop",
+        #         ]
+        #         for name in names:
+        #             p = assets_dir / f"icon_{name}_48.png"
+        #             size = 48
+        #             if not p.exists():
+        #                 p = assets_dir / f"icon_{name}_28.png"
+        #                 size = 28
+        #             try:
+        #                 if p.exists():
+        #                     loaded = Image.open(p).convert("RGBA")
+        #                     try:
+        #                         ctk_img = ctk.CTkImage(
+        #                             light_image=loaded, size=(size, size)
+        #                         )
+        #                         self._icons[name] = ctk_img
+        #                     except Exception:
+        #                         self._icons[name] = ImageTk.PhotoImage(loaded)
+        #                 else:
+        #                     self._icons[name] = None
+        #             except Exception:
+        #                 self._icons[name] = None
 
-                # update button images if buttons already exist
-                try:
-                    for btn_name in (
-                        "btn_start",
-                        "btn_calibrate",
-                        "btn_auto_all",
-                        "btn_remove_calib",
-                        "btn_export",
-                        "btn_import",
-                        "btn_undo_remove",
-                        "btn_stop",
-                    ):
-                        if hasattr(self, btn_name):
-                            btn = getattr(self, btn_name)
-                            key = btn_name.replace("btn_", "")
-                            if key == "auto_all":
-                                key = "auto"
-                            if key == "remove_calib":
-                                key = "remove"
-                            if key == "undo_remove":
-                                key = "undo"
-                            icon = self._icons.get(key)
-                            try:
-                                btn.configure(image=icon)
-                            except Exception:
-                                pass
-                except Exception:
-                    pass
-
-        self.btn_auto_all = ctk.CTkButton(
-            controls_frame,
-            text="Auto-gerar",
-            command=self.auto_generate_all,
-            width=btn_w,
-            height=btn_h,
-            fg_color="#10a5b0",
-            corner_radius=btn_radius,
-            image=self._icons.get("auto"),
-        )
-        self.btn_auto_all.grid(row=1, column=2, padx=6, pady=6, sticky="ew")
+        #         # update button images if buttons already exist
+        #         try:
+        #             for btn_name in (
+        #                 "btn_start",
+        #                 "btn_calibrate",
+        #                 "btn_auto_all",
+        #                 "btn_remove_calib",
+        #                 "btn_export",
+        #                 "btn_import",
+        #                 "btn_undo_remove",
+        #                 "btn_stop",
+        #             ):
+        #                 if hasattr(self, btn_name):
+        #                     btn = getattr(self, btn_name)
+        #                     key = btn_name.replace("btn_", "")
+        #                     if key == "auto_all":
+        #                         key = "auto"
+        #                     if key == "remove_calib":
+        #                         key = "remove"
+        #                     if key == "undo_remove":
+        #                         key = "undo"
+        #                     icon = self._icons.get(key)
+        #                     try:
+        #                         btn.configure(image=icon)
+        #                     except Exception:
+        #                         pass
+        #         except Exception:
+        #             pass
 
         # linha 2: remover / exportar
         self.btn_remove_calib = ctk.CTkButton(
@@ -323,7 +312,7 @@ class App(ctk.CTk):
             image=self._icons.get("stop"),
         )
         self.btn_stop.grid(
-            row=4, column=0, columnspan=3, pady=(10, 0), padx=6, sticky="ew"
+            row=4, column=0, columnspan=2, pady=(10, 0), padx=6, sticky="ew"
         )
 
         self.log_box = ctk.CTkTextbox(self, width=400, height=260)
@@ -480,7 +469,6 @@ class App(ctk.CTk):
             for btn_name in (
                 "btn_start",
                 "btn_calibrate",
-                "btn_auto_all",
                 "btn_remove_calib",
                 "btn_export",
                 "btn_import",
@@ -507,19 +495,6 @@ class App(ctk.CTk):
     def _update_icon_preview(self, style: str):
         # preview removed in simplified UI
         return
-
-    def auto_generate_all(self):
-        try:
-            from app.calibration import generate_all_from_resolucoes
-
-            p = generate_all_from_resolucoes()
-            try:
-                size_kb = Path(p).stat().st_size / 1024
-                self.log(f"🔧 Calibrações geradas em {p} ({size_kb:.1f} KB)")
-            except Exception:
-                self.log(f"🔧 Calibrações geradas em {p}")
-        except Exception as e:
-            self.log(f"❌ Erro ao gerar calibrações: {e}")
 
     def remove_calibration_current(self):
         try:
@@ -586,7 +561,7 @@ class App(ctk.CTk):
                 return
 
             new_keys = set(new_data.keys())
-            calib_path = Path(__file__).parent / "calibration.json"
+            calib_path = CALIB_PATH
             existing_keys = set()
             if calib_path.exists():
                 try:
