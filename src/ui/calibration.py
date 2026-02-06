@@ -40,8 +40,8 @@ LABELS = {
     "detalhamentos_pontos": "Detalhamento dos pontos",
     "abrir_pc_search": "PC Search",
     "barra_pesquisa": "Barra de Pesquisa do https://www.bing.com",
-    "aba_pesquisa": "Aba da Pagina de Pesquisa do https://www.bing.com",
-    "aba_principal": "Aba da Pagina do https://rewards.bing.com",
+    "aba_pesquisa": "Aba da Página de Pesquisa do https://www.bing.com",
+    "aba_principal": "Aba da Página do https://rewards.bing.com",
 }
 
 # ======================================================
