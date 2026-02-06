@@ -123,6 +123,46 @@ git push origin v1.0.1
 
 ---
 
+## 📚 Documentação Oficial
+
+Toda a documentação do **AutoRewardsPC** está disponível para download abaixo, organizada por público e finalidade.
+
+### 👤 Usuários Finais
+- 📘 **Manual do Usuário**  
+  Guia completo com imagens reais, fluxo correto de uso, calibração e boas práticas.  
+  👉 [Download](docs/Manuais/Manual_Usuario_AutoRewardsPC_Profissional.docx)
+
+---
+
+### 🛠️ Suporte e Operação
+- 🧰 **Guia de Suporte e Diagnóstico**  
+  Solução de problemas, diagnósticos comuns e ações corretivas.  
+  👉 [Download](docs/Guias/Guia_Suporte_e_Diagnostico_AutoRewardsPC.docx)
+
+---
+
+### 👨‍💻 Desenvolvedores
+- 🏗️ **Guia de Arquitetura**  
+  Visão técnica da estrutura, componentes e decisões de design do sistema.  
+  👉 [Download](docs/Guias/Guia_Arquitetura_AutoRewardsPC.docx)
+
+- 🔌 **Guia de Extensão para Desenvolvedores**  
+  Como estender, integrar ou modificar o sistema.  
+  👉 [Download](docs/Guias/Guia_Extensao_Desenvolvedor_AutoRewardsPC.docx)
+
+- 🏷️ **Guia de Release e Versionamento**  
+  Processo de versionamento, tags, releases e boas práticas.  
+  👉 [Download](docs/Guias/Guia_Release_e_Versionamento_AutoRewardsPC.docx)
+
+---
+
+### 💼 Documentação Comercial
+- 📄 **Apresentação Comercial e Técnica**  
+  Documento voltado para clientes, parceiros e stakeholders.  
+  👉 [Download](docs/Comercial/AutoRewardsPC_Documentacao_Comercial.docx)
+
+---
+
 ## 📜 Licença
 
 Distribuído sob a licença **MIT**.
