@@ -1,0 +1,63 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "AutoRewardsPC"
+version = "1.0.0"
+description = "Automação desktop para Microsoft Rewards com interface gráfica e calibração de tela"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+
+authors = [
+  { name = "LeprechaunsGreen" }
+]
+
+keywords = [
+  "automation",
+  "desktop",
+  "pyautogui",
+  "customtkinter",
+  "microsoft-rewards"
+]
+
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: End Users/Desktop",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: Microsoft :: Windows",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Topic :: Desktop Environment",
+  "Topic :: Software Development :: Automation"
+]
+
+dependencies = [
+  "customtkinter>=5.2.0",
+  "Pillow>=10.0.0",
+  "pyautogui>=0.9.54",
+  "pygetwindow>=0.0.9",
+  "pyperclip>=1.8.2",
+  "pytesseract>=0.3.10",
+  "pynput>=1.7.6",
+  "cairosvg>=2.7.1",
+]
+
+# =====================================================
+# SETUPTOOLS
+# =====================================================
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+exclude = ["tests*", "docs*", "examples*"]
+
+# =====================================================
+# PYINSTALLER (documentação / referência)
+# =====================================================
+# PyInstaller não é dependência de runtime.
+# Instale apenas para build:
+#   pip install pyinstaller
